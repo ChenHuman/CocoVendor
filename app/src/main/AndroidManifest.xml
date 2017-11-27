@@ -73,6 +73,7 @@
 
         <activity
             android:name=".activities.HomePageActivity"
+            android:launchMode="singleTask"
             android:label="主页" />
         <activity
             android:name=".activities.LoginActivity"

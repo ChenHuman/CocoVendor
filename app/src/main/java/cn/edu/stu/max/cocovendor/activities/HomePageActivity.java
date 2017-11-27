@@ -3,6 +3,7 @@ package cn.edu.stu.max.cocovendor.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -103,6 +104,7 @@ public class HomePageActivity extends SerialPortActivity {
      */
     private int curIndex = 0;
     private ViewPagerAdapter viewPagerAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,10 +138,12 @@ public class HomePageActivity extends SerialPortActivity {
 //        });
 
         //初始化数据源,函数后面得知是24
+        mDatas = new ArrayList<>();
         initDatas();
         inflater = LayoutInflater.from(this);
         //总的页数=总数/每页数量，并取整
         pageCount = (int) Math.ceil(mDatas.size() * 1.0 / pageSize);
+        pageCount = 1;
         mPagerList = new ArrayList<View>();
         try {
             for (int i = 0; i < pageCount; i++) {
@@ -153,6 +157,7 @@ public class HomePageActivity extends SerialPortActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         int pos = position + curIndex * pageSize;
                         ToastFactory.makeText(HomePageActivity.this, mDatas.get(pos).getName(), Toast.LENGTH_SHORT).show();
+                        videoViewHomePageAd.pause();
                         Intent intent = new Intent(HomePageActivity.this, PayActivity.class);
                         intent.putExtra("which_floor", pos);
                         startActivityForResult(intent, 2);
@@ -243,7 +248,7 @@ public class HomePageActivity extends SerialPortActivity {
             }
         });
 
-        ImageButton a = (ImageButton) findViewById(R.id.a);
+        Button a = (Button) findViewById(R.id.a);
         a.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -359,7 +364,6 @@ public class HomePageActivity extends SerialPortActivity {
                             editor2.apply();
                             break;
                     }
-
 //                    runOnUiThread(new Runnable() {
 //                        public void run() {
 //                           ToastFactory.makeText(HomePageActivity.this, text, Toast.LENGTH_SHORT).show();
@@ -368,7 +372,6 @@ public class HomePageActivity extends SerialPortActivity {
 //                    });
 //                    mOutputStream.write(text.getBytes());
 //                    mOutputStream.write('\n');
-
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
@@ -384,6 +387,26 @@ public class HomePageActivity extends SerialPortActivity {
                 //ToastFactory.makeText(HomePageActivity.this, new String(buffer, 0, size), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // 主界面货物更新线程
+    private class GoodsDataRefreshThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+            while (!isInterrupted()) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        initDatas();
+                    }
+                });
+            }
+        }
     }
 
     //定位返回的信息
@@ -542,6 +565,8 @@ public class HomePageActivity extends SerialPortActivity {
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
+       // initVideoPath();
+        videoViewHomePageAd.start();
 //        handler.postDelayed(runnable, 1000 * SECONDS_OF_AD);
     }
 
@@ -585,8 +610,8 @@ public class HomePageActivity extends SerialPortActivity {
      * 初始化数据源
      */
     private void initDatas() {
-        mDatas = new ArrayList<>();
-        //暂时初始化24个空货物的时候有两个点
+        //mDatas = new ArrayList<>();
+        // 暂时初始化24个空货物的时候有两个点
         for (int i = 0; i < 24; i++) {
             SharedPreferences preferences = getSharedPreferences("cabinet_floor", MODE_PRIVATE);
             int whichGoods =  preferences.getInt("cabinet_floor_" + i, 0);
@@ -622,7 +647,6 @@ public class HomePageActivity extends SerialPortActivity {
                         .setBackgroundResource(R.drawable.dot_selected);
                 curIndex = position;
             }
-
             public void onPageScrolled(int arg0, float arg1, int arg2) {
             }
 
