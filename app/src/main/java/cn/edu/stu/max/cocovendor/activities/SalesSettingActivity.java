@@ -1,6 +1,7 @@
 package cn.edu.stu.max.cocovendor.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +26,7 @@ import cn.edu.stu.max.cocovendor.R;
 import cn.edu.stu.max.cocovendor.adapters.SalesSettingAdapter;
 import cn.edu.stu.max.cocovendor.databaseClass.Goods;
 
-public class SalesSettingActivity extends AppCompatActivity {
+public class SalesSettingActivity extends AppCompatActivity implements SalesSettingAdapter.Callback{
 
     private RecyclerView recyclerViewSalesSetting;
     private SalesSettingAdapter salesSettingAdapter;
@@ -58,7 +59,7 @@ public class SalesSettingActivity extends AppCompatActivity {
         //设置recyclerView每个item间的分割线
         recyclerViewSalesSetting.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //创建recyclerView的实例，并将数据传输到适配器
-        salesSettingAdapter = new SalesSettingAdapter(list, SalesSettingActivity.this);
+        salesSettingAdapter = new SalesSettingAdapter(list, SalesSettingActivity.this, this);
         //recyclerView显示适配器内容
         recyclerViewSalesSetting.setAdapter(salesSettingAdapter);
         //找到按钮UI控件并设置添加按钮监听事件
@@ -203,7 +204,6 @@ public class SalesSettingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        list.remove()
         list.clear();
         for (int i = 0; i < CABINET_SIZE; i ++) {
             int whichGoods =  preferences.getInt("cabinet_floor_" + i, 0);
@@ -225,5 +225,37 @@ public class SalesSettingActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void click(View v) {
+        switch (v.getId()) {
+            case R.id.btn_set_goods:
+                Intent intent = new Intent(this, SheetGoodsActivity.class);
+                intent.putExtra("cabinetNum", (Integer) v.getTag());
+                intent.putExtra("isSelGoods", true);
+                startActivity(intent);
+                break;
+            case R.id.btn_del_goods:
+                SharedPreferences preferences = getSharedPreferences("cabinet_floor", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                int postion = (Integer) v.getTag();
+                Goods goods = salesSettingAdapter.getList().get(postion);
+                if (goods.getName() != null) {
+                    String GoodsOnSaleLocal = goods.getOnSaleLocal();
+                    GoodsOnSaleLocal = GoodsOnSaleLocal.replace("-" + postion + ":", "");
+                    goods.setOnSaleLocal(GoodsOnSaleLocal);
+                    if (GoodsOnSaleLocal != null) {
+                        goods.setOnSale(false);
+                    }
+                    goods.save();
+                    list.remove(postion);
+                    list.add(postion, new Goods());
+                }
+                editor.putInt("cabinet_floor_" + postion, 0);
+                editor.apply();
+                salesSettingAdapter.notifyItemChanged(postion);
+                break;
+        }
     }
 }
