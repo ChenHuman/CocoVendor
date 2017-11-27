@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -242,7 +243,7 @@ public class HomePageActivity extends SerialPortActivity {
             }
         });
 
-        Button a = (Button) findViewById(R.id.a);
+        ImageButton a = (ImageButton) findViewById(R.id.a);
         a.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
