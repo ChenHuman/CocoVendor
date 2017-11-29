@@ -28,9 +28,8 @@ import cn.edu.stu.max.cocovendor.databaseClass.Goods;
 
 public class SalesSettingActivity extends AppCompatActivity implements SalesSettingAdapter.Callback{
 
-    private RecyclerView recyclerViewSalesSetting;
     private SalesSettingAdapter salesSettingAdapter;
-    private List<Goods> list = new ArrayList<Goods>();
+    private List<Goods> list = new ArrayList<>();
     //控制有多少个货柜道
     private static int CABINET_SIZE = 24;
     private static float PRICE_STEP = 0.5f;
@@ -54,7 +53,7 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
             }
         }
         //找到UI控件
-        recyclerViewSalesSetting = (RecyclerView) findViewById(R.id.rv_sales_setting);
+        RecyclerView recyclerViewSalesSetting = (RecyclerView) findViewById(R.id.rv_sales_setting);
         //设置线性布局 Creates a vertical LinearLayoutManager
         recyclerViewSalesSetting.setLayoutManager(new LinearLayoutManager(this));
         //设置recyclerView每个item间的分割线

@@ -78,7 +78,7 @@
                     android:layout_margin="5dp"
                     android:gravity="center"
                     android:text="@string/label_sales_setting"
-                    android:background="@color/colorBlue"
+                    android:background="@android:color/holo_green_light"
                     android:textColor="@color/colorWhite"
                     android:textSize="30sp"/>
             </TableRow>
