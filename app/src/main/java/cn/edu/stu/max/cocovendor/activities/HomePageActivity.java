@@ -73,8 +73,8 @@ public class HomePageActivity extends SerialPortActivity {
     private ImageView imageViewHomePageAd;
 
     private static int videoFileIndex = 0;
-    private static int[] videoListOrder;
-    private static int[] videoListFrequency;
+    private static int[] videoListOrder;//视频顺序数组
+    private static int[] videoListFrequency;//视频频率数组
 
     private SharedPreferences share;
 
@@ -109,7 +109,7 @@ public class HomePageActivity extends SerialPortActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().hide();
+        getSupportActionBar().hide();//隐藏标题栏
 
         setContentView(R.layout.activity_home_page);
 
@@ -160,7 +160,7 @@ public class HomePageActivity extends SerialPortActivity {
                         videoViewHomePageAd.pause();
                         Intent intent = new Intent(HomePageActivity.this, PayActivity.class);
                         intent.putExtra("which_floor", pos);
-                        startActivityForResult(intent, 2);
+                        startActivityForResult(intent, REQUEST_PAY_RESULT_CODE);//REQUEST_PAY_RESULT_CODE在上面定义为2，用来在onActivityResult时区分是从哪个activity返回的
                     }
                 });
             }
@@ -568,6 +568,8 @@ public class HomePageActivity extends SerialPortActivity {
        // initVideoPath();
         videoViewHomePageAd.start();
 //        handler.postDelayed(runnable, 1000 * SECONDS_OF_AD);
+        initVideoPath();
+        videoViewHomePageAd.start();
     }
 
     @Override

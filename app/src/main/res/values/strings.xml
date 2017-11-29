@@ -35,7 +35,7 @@
     <string name="label_reboot">重新启动</string>
     <string name="label_sales_setting">销售设计</string>
     <string name="label_sales_analyze">统计分析</string>
-    <string name="label_goods_local_id">机柜位置编号</string>
+    <string name="label_goods_local_id">编号</string>
     <string name="label_goods_info">货物信息</string>
     <string name="label_goods_price">价格</string>
     <string name="label_goods_quanlity">库存</string>
