@@ -33,6 +33,7 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
     private List<Goods> list = new ArrayList<Goods>();
     //控制有多少个货柜道
     private static int CABINET_SIZE = 24;
+    private static float PRICE_STEP = 0.5f;
     private SharedPreferences preferences;
 
     @Override
@@ -155,6 +156,8 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
 
     @Override
     public void click(View v) {
+        int postion = (Integer) v.getTag();
+        Goods goods = list.get(postion);
         switch (v.getId()) {
             case R.id.btn_set_goods:
                 Intent intent = new Intent(this, SheetGoodsActivity.class);
@@ -165,8 +168,7 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
             case R.id.btn_del_goods:
                 SharedPreferences preferences = getSharedPreferences("cabinet_floor", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                int postion = (Integer) v.getTag();
-                Goods goods = salesSettingAdapter.getList().get(postion);
+                //直接判断返回的goods变量是否为null会有问题，转为判断名字是否null
                 if (goods.getName() != null) {
                     String GoodsOnSaleLocal = goods.getOnSaleLocal();
                     GoodsOnSaleLocal = GoodsOnSaleLocal.replace("-" + postion + ":", "");
@@ -181,6 +183,24 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
                 editor.putInt("cabinet_floor_" + postion, 0);
                 editor.apply();
                 salesSettingAdapter.notifyItemChanged(postion);
+                break;
+            case R.id.btn_goods_price_add:
+                if (goods.getName() != null) {
+                    goods.setSales_price(goods.getSales_price() + PRICE_STEP);//PRICE_STEP开始设置为0.5
+                    goods.save();
+                    salesSettingAdapter.notifyItemChanged(postion);
+                }
+                break;
+            case R.id.btn_goods_price_dec:
+                if (goods.getName() != null) {
+                    if(goods.getSales_price() > PRICE_STEP) {
+                        goods.setSales_price(goods.getSales_price() - PRICE_STEP);
+                    } else {
+                        goods.setSales_price(0);
+                    }
+                    goods.save();
+                    salesSettingAdapter.notifyItemChanged(postion);
+                }
                 break;
         }
     }

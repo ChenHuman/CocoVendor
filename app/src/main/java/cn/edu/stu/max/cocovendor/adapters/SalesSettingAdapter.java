@@ -23,7 +23,6 @@ import cn.edu.stu.max.cocovendor.databaseClass.Goods;
 public class SalesSettingAdapter extends RecyclerView.Adapter<SalesSettingAdapter.ViewHolder> implements View.OnClickListener {
     private List<Goods> list;
     private Context context;
-//    private OnButtonClickListener buttonClickListener;
     private Callback callback;
 
     public SalesSettingAdapter(List<Goods> list, Context context, Callback callback) {
@@ -61,8 +60,10 @@ public class SalesSettingAdapter extends RecyclerView.Adapter<SalesSettingAdapte
             holder.tv_sheetRow3.setText(String.valueOf(list.get(position).getSales_price()));
             holder.tv_sheetRow4.setText(String.valueOf(list.get(position).getNum()));
         }
-//        holder.btn_setGoods.setOnClickListener(new GoodsSettingClickListener(position));
-//        holder.btn_delGoods.setOnClickListener(new GoodsSettingClickListener(position));
+        holder.btn_goodsAdd.setOnClickListener(this);
+        holder.btn_goodsAdd.setTag(position);
+        holder.btn_goodsDec.setOnClickListener(this);
+        holder.btn_goodsDec.setTag(position);
         holder.btn_setGoods.setOnClickListener(this);
         holder.btn_setGoods.setTag(position);
         holder.btn_delGoods.setOnClickListener(this);
@@ -86,7 +87,9 @@ public class SalesSettingAdapter extends RecyclerView.Adapter<SalesSettingAdapte
         final TextView tv_sheetRow1;
         final ImageView iv_sheetRow2;
         final TextView tv_sheetRow2;
+        final Button btn_goodsAdd;
         final TextView tv_sheetRow3;
+        final Button btn_goodsDec;
         final TextView tv_sheetRow4;
         final Button btn_setGoods;
         final Button btn_delGoods;
@@ -96,47 +99,12 @@ public class SalesSettingAdapter extends RecyclerView.Adapter<SalesSettingAdapte
             tv_sheetRow1 = (TextView) itemView.findViewById(R.id.tv_sheetRow1);
             iv_sheetRow2 = (ImageView) itemView.findViewById(R.id.iv_sheetRow2);
             tv_sheetRow2 = (TextView) itemView.findViewById(R.id.tv_sheetRow2);
+            btn_goodsAdd = (Button) itemView.findViewById(R.id.btn_goods_price_add);
             tv_sheetRow3 = (TextView) itemView.findViewById(R.id.tv_sheetRow3);
+            btn_goodsDec = (Button) itemView.findViewById(R.id.btn_goods_price_dec);
             tv_sheetRow4 = (TextView) itemView.findViewById(R.id.tv_sheetRow4);
             btn_setGoods = (Button) itemView.findViewById(R.id.btn_set_goods);
             btn_delGoods = (Button) itemView.findViewById(R.id.btn_del_goods);
         }
     }
-
-//    private class GoodsSettingClickListener implements View.OnClickListener {
-//        private int postion;
-//
-//        GoodsSettingClickListener(int postion) {
-//            this.postion = postion;
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//            switch (v.getId()) {
-//                case R.id.btn_set_goods:
-//                    Intent intent = new Intent(context, SheetGoodsActivity.class);
-//                    intent.putExtra("cabinetNum", postion);
-//                    intent.putExtra("isSelGoods", true);
-//                    context.startActivity(intent);
-//                    break;
-//                case R.id.btn_del_goods:
-//                    SharedPreferences preferences  = context.getSharedPreferences("cabinet_floor", Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = preferences.edit();
-//                    int whichGoods =  preferences.getInt("cabinet_floor_" + postion, 0);
-//                    Goods goods = DataSupport.find(Goods.class, whichGoods);
-//                    if (goods != null) {
-//                        String GoodsOnSaleLocal = goods.getOnSaleLocal();
-//                        GoodsOnSaleLocal = GoodsOnSaleLocal.replace("-" + postion + ":", "");
-//                        goods.setOnSaleLocal(GoodsOnSaleLocal);
-//                        if (GoodsOnSaleLocal != null) {
-//                            goods.setOnSale(false);
-//                        }
-//                        goods.save();
-//                    }
-//                    editor.putInt("cabinet_floor_" + postion, 0);
-//                    editor.apply();
-//                    break;
-//            }
-//        }
-//    }
 }
