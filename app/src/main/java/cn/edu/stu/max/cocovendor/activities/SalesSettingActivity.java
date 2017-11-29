@@ -18,6 +18,7 @@ import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 import org.litepal.crud.callback.FindMultiCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ import cn.edu.stu.max.cocovendor.adapters.SalesSettingAdapter;
 import cn.edu.stu.max.cocovendor.databaseClass.Goods;
 
 public class SalesSettingActivity extends AppCompatActivity implements SalesSettingAdapter.Callback{
+
+    private final static String FROMPATH = "/mnt/usb_storage/USB_DISK2/udisk0/Goods/";   // U盘货物存储路径
 
     private RecyclerView recyclerViewSalesSetting;
     private SalesSettingAdapter salesSettingAdapter;
@@ -256,6 +259,15 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
                 editor.apply();
                 salesSettingAdapter.notifyItemChanged(postion);
                 break;
+        }
+    }
+
+    private boolean USBExists() {
+        File usbFile = new File(FROMPATH);
+        if (usbFile.exists()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

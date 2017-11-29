@@ -81,6 +81,9 @@ public class SalesSettingAdapter extends RecyclerView.Adapter<SalesSettingAdapte
     public List<Goods> getList() {
         return list;
     }
+    public void setList(List<Goods> list) {
+        this.list = list;
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         final TextView tv_sheetRow1;

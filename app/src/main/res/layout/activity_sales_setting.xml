@@ -218,6 +218,12 @@
         android:gravity="center"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp">
+        
+        <Button
+            android:id="@+id/btn_sales_setting_udisk_import"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="从U盘导入"/>
         <Button
             android:id="@+id/btn_sales_setting_init"
             android:layout_width="wrap_content"
