@@ -100,13 +100,30 @@
             android:paddingTop="10dp"
             android:maxLines="1"
             android:text="@string/label_goods_local_id"
-            android:textColor="#000000"
+            android:textColor="@color/colorBlack"
             android:textSize="15sp" />
 
         <View
             android:layout_width="1.5dp"
             android:layout_height="match_parent"
-            android:background="#000000" />
+            android:background="@color/colorBlack" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:maxLines="1"
+            android:text="@string/label_goods_info"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="1.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack" />
 
         <TextView
             android:layout_width="0dp"
@@ -116,31 +133,14 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:maxLines="1"
-            android:text="@string/label_goods_info"
-            android:textColor="#000000"
-            android:textSize="15sp" />
-
-        <View
-            android:layout_width="1.5dp"
-            android:layout_height="match_parent"
-            android:background="#000000" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:maxLines="1"
             android:text="@string/label_goods_price"
-            android:textColor="#000000"
+            android:textColor="@color/colorBlack"
             android:textSize="15sp" />
 
         <View
             android:layout_width="1.5dp"
             android:layout_height="match_parent"
-            android:background="#000000" />
+            android:background="@color/colorBlack" />
 
         <TextView
             android:layout_width="0dp"
@@ -151,41 +151,41 @@
             android:paddingTop="10dip"
             android:maxLines="1"
             android:text="@string/label_goods_quanlity"
-            android:textColor="#000000"
+            android:textColor="@color/colorBlack"
             android:textSize="15sp" />
 
         <View
             android:layout_width="1.5dp"
             android:layout_height="match_parent"
-            android:background="#000000" />
+            android:background="@color/colorBlack" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dip"
             android:maxLines="1"
             android:text="@string/label_goods_change"
-            android:textColor="#000000"
+            android:textColor="@color/colorBlack"
             android:textSize="15sp" />
 
         <View
             android:layout_width="1.5dp"
             android:layout_height="match_parent"
-            android:background="#000000" />
+            android:background="@color/colorBlack" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dip"
             android:maxLines="1"
             android:text="@string/label_goods_del"
-            android:textColor="#000000"
+            android:textColor="@color/colorBlack"
             android:textSize="15sp" />
     </LinearLayout>
 

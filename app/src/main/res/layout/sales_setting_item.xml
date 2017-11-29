@@ -25,7 +25,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="70dp"
-        android:layout_weight="2"
+        android:layout_weight="4"
         android:gravity="center">
 
         <ImageView
@@ -51,16 +51,46 @@
         android:layout_height="match_parent"
         android:background="@color/colorBlack" />
 
-    <TextView
-        android:id="@+id/tv_sheetRow3"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dip"
-        android:textColor="@color/colorBlack"
-        android:textSize="15sp" />
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_goods_price_add"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="+"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tv_sheetRow3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dip"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btn_goods_price_dec"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="—"
+            android:textSize="24sp" />
+    </LinearLayout>
 
     <View
         android:layout_width="1.5dp"
@@ -87,7 +117,7 @@
         android:id="@+id/btn_set_goods"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
@@ -104,7 +134,7 @@
         android:id="@+id/btn_del_goods"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center"
         android:textColor="@color/colorBlack"
         android:text="@string/label_goods_del"
