@@ -89,7 +89,7 @@ public class HomePageActivity extends SerialPortActivity {
 
     private ViewPager mPager;
     private List<View> mPagerList;
-    private List<Model> mDatas;
+    private List<Model> mDatas = new ArrayList<>();
     private LinearLayout mLlDot;
     private LayoutInflater inflater;
     /**
@@ -139,13 +139,11 @@ public class HomePageActivity extends SerialPortActivity {
 //        });
 
         //初始化数据源,函数后面得知是24
-        mDatas = new ArrayList<>();
         initDatas();
         inflater = LayoutInflater.from(this);
         //总的页数=总数/每页数量，并取整
         pageCount = (int) Math.ceil(mDatas.size() * 1.0 / pageSize);
-        pageCount = 1;
-        mPagerList = new ArrayList<View>();
+        mPagerList = new ArrayList<>();
         try {
             for (int i = 0; i < pageCount; i++) {
                 //每个页面都是inflate出一个新实例
@@ -158,7 +156,6 @@ public class HomePageActivity extends SerialPortActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         int pos = position + curIndex * pageSize;
                         ToastFactory.makeText(HomePageActivity.this, mDatas.get(pos).getName(), Toast.LENGTH_SHORT).show();
-                        videoViewHomePageAd.pause();
                         Intent intent = new Intent(HomePageActivity.this, PayActivity.class);
                         intent.putExtra("which_floor", pos);
                         startActivityForResult(intent, REQUEST_PAY_RESULT_CODE);//REQUEST_PAY_RESULT_CODE在上面定义为2，用来在onActivityResult时区分是从哪个activity返回的
@@ -365,6 +362,7 @@ public class HomePageActivity extends SerialPortActivity {
                             editor2.apply();
                             break;
                     }
+
 //                    runOnUiThread(new Runnable() {
 //                        public void run() {
 //                           ToastFactory.makeText(HomePageActivity.this, text, Toast.LENGTH_SHORT).show();
@@ -373,6 +371,7 @@ public class HomePageActivity extends SerialPortActivity {
 //                    });
 //                    mOutputStream.write(text.getBytes());
 //                    mOutputStream.write('\n');
+
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
@@ -388,26 +387,6 @@ public class HomePageActivity extends SerialPortActivity {
                 //ToastFactory.makeText(HomePageActivity.this, new String(buffer, 0, size), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    // 主界面货物更新线程
-    private class GoodsDataRefreshThread extends Thread {
-        @Override
-        public void run() {
-            super.run();
-            while (!isInterrupted()) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        initDatas();
-                    }
-                });
-            }
-        }
     }
 
     //定位返回的信息
@@ -571,6 +550,41 @@ public class HomePageActivity extends SerialPortActivity {
 //        handler.postDelayed(runnable, 1000 * SECONDS_OF_AD);
         initVideoPath();
         videoViewHomePageAd.start();
+        mDatas.clear();
+        for (int i = 0; i < 24; i++) {
+            SharedPreferences preferences = getSharedPreferences("cabinet_floor", MODE_PRIVATE);
+            int whichGoods =  preferences.getInt("cabinet_floor_" + i, 0);
+            Goods goods = DataSupport.find(Goods.class, whichGoods);
+            if (whichGoods == 0) {
+                //Model内参数分别为价格，名字，图片，是否显示售空
+                mDatas.add(new Model("", "", R.drawable.ic_category_null, false));
+            } else {
+                mDatas.add(new Model("¥ " + String.valueOf(goods.getSales_price()), goods.getName(), goods.getImage_path(), goods.getNum() == 0));//最后一个参数，库存等于0为真时显示售空
+            }
+        }
+        try {
+            mPagerList.clear();
+            for (int i = 0; i < pageCount; i++) {
+                //每个页面都是inflate出一个新实例
+                GridView gridView = (GridView) inflater.inflate(R.layout.gridview, mPager, false);
+                gridView.setAdapter(new GridViewAdapter(this, mDatas, i, pageSize));
+                mPagerList.add(gridView);
+
+                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        int pos = position + curIndex * pageSize;
+                        ToastFactory.makeText(HomePageActivity.this, mDatas.get(pos).getName(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomePageActivity.this, PayActivity.class);
+                        intent.putExtra("which_floor", pos);
+                        startActivityForResult(intent, REQUEST_PAY_RESULT_CODE);//REQUEST_PAY_RESULT_CODE在上面定义为2，用来在onActivityResult时区分是从哪个activity返回的
+                    }
+                });
+            }
+        } catch (NullPointerException e) {
+            ToastFactory.makeText(HomePageActivity.this, "当前没有商品", Toast.LENGTH_SHORT).show();
+        }
+        viewPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -613,8 +627,7 @@ public class HomePageActivity extends SerialPortActivity {
      * 初始化数据源
      */
     private void initDatas() {
-        //mDatas = new ArrayList<>();
-        // 暂时初始化24个空货物的时候有两个点
+        //暂时初始化24个空货物的时候有两个点
         for (int i = 0; i < 24; i++) {
             SharedPreferences preferences = getSharedPreferences("cabinet_floor", MODE_PRIVATE);
             int whichGoods =  preferences.getInt("cabinet_floor_" + i, 0);
@@ -650,6 +663,7 @@ public class HomePageActivity extends SerialPortActivity {
                         .setBackgroundResource(R.drawable.dot_selected);
                 curIndex = position;
             }
+
             public void onPageScrolled(int arg0, float arg1, int arg2) {
             }
 

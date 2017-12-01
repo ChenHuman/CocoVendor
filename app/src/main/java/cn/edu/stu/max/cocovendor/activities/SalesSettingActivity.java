@@ -41,7 +41,7 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
 
     private RecyclerView recyclerViewSalesSetting;
     private SalesSettingAdapter salesSettingAdapter;
-    private List<Goods> list = new ArrayList<Goods>();
+    private List<Goods> list = new ArrayList<>();
     //控制有多少个货柜道
     private static int CABINET_SIZE = 24;
     private static float PRICE_STEP = 0.5f;
@@ -65,7 +65,7 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
             }
         }
         //找到UI控件
-        recyclerViewSalesSetting = (RecyclerView) findViewById(R.id.rv_sales_setting);
+        RecyclerView recyclerViewSalesSetting = (RecyclerView) findViewById(R.id.rv_sales_setting);
         //设置线性布局 Creates a vertical LinearLayoutManager
         recyclerViewSalesSetting.setLayoutManager(new LinearLayoutManager(this));
         //设置recyclerView每个item间的分割线
@@ -237,36 +237,4 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
                 break;
         }
     }
-
-    private boolean USBExists() {
-        File usbFile = new File(FROMPATH);
-        if (usbFile.exists()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private List<Goods> getGoodsList(String filePath) {
-        File[] files = FileService.getFiles(filePath);
-        list.clear();
-        for (int i = 0; i < files.length; i ++) {
-            Goods goods = new Goods();
-            goods.setImage_path_s(files[i].getAbsolutePath());
-            goods.setName(getGoodsName(files[i].getName()));
-            goods.setSales_price(getGoodsPrice(files[i].getName()));
-            goods.save();
-            list.add(goods);
-        }
-        return list;
-    }
-
-    public String getGoodsName(String fileName) {
-        return fileName.substring(0, fileName.indexOf("¥"));
-    }
-
-    public float getGoodsPrice(String fileName) {
-        return Float.parseFloat(fileName.substring(fileName.indexOf("¥") + 1,fileName.lastIndexOf('.')));
-    }
-
 }

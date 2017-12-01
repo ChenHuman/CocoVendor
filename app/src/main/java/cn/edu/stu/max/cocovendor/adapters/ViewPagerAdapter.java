@@ -20,7 +20,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(mViewList.get(position));
+        container.removeView((View) object);
     }
 
     @Override
@@ -41,7 +41,9 @@ public class ViewPagerAdapter extends PagerAdapter {
         return view == object;
     }
 
-    public View getItem(int index) {
-        return mViewList.get(index);
+    @Override
+    public int getItemPosition(Object object) {
+//        return super.getItemPosition(object);
+        return POSITION_NONE;
     }
 }
