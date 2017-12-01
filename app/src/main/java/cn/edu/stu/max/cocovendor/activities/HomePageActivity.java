@@ -557,9 +557,9 @@ public class HomePageActivity extends SerialPortActivity {
             Goods goods = DataSupport.find(Goods.class, whichGoods);
             if (whichGoods == 0) {
                 //Model内参数分别为价格，名字，图片，是否显示售空
-                mDatas.add(new Model("", "", R.drawable.ic_category_null, false));
+                mDatas.add(new Model("", "", null_picture_file_path, false));
             } else {
-                mDatas.add(new Model("¥ " + String.valueOf(goods.getSales_price()), goods.getName(), goods.getImage_path(), goods.getNum() == 0));//最后一个参数，库存等于0为真时显示售空
+                mDatas.add(new Model("¥ " + String.valueOf(goods.getSales_price()), goods.getName(), goods.getImage_path_s(), goods.getNum() == 0));//最后一个参数，库存等于0为真时显示售空
             }
         }
         try {

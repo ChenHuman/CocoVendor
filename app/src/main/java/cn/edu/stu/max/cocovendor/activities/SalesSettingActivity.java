@@ -76,25 +76,30 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
         recyclerViewSalesSetting.setAdapter(salesSettingAdapter);
         //找到按钮UI控件并设置添加按钮监听事件
 
-        Button buttonSalesSettingUDiskImport = (Button) findViewById(R.id.btn_sales_setting_udisk_import);
+        final Button buttonSalesSettingUDiskImport = (Button) findViewById(R.id.btn_sales_setting_udisk_import);
         buttonSalesSettingUDiskImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File[] UDiskFiles = FileService.getFiles(FROMPATH);
-                for (File file : UDiskFiles) {
-                    if (file != null)
-                        FileService.copyFile(file.getPath(), TOPATH + file.getName());
-                }
+                if (USBExists()) {
+                    File[] UDiskFiles = FileService.getFiles(FROMPATH);
+                    for (File file : UDiskFiles) {
+                        if (file != null)
+                            FileService.copyFile(file.getPath(), TOPATH + file.getName());
+                    }
 
-                File[] internalFiles = FileService.getFiles(TOPATH);
-                for (File file : internalFiles) {
-                    Goods goods = new Goods();
-                    goods.setImage_path_s(file.getAbsolutePath());
-                    goods.setName(getGoodsName(file.getName()));
-                    goods.setSales_price(getGoodsPrice(file.getName()));
-                    goods.save();
+                    File[] internalFiles = FileService.getFiles(TOPATH);
+                    for (File file : internalFiles) {
+                        Goods goods = new Goods();
+                        goods.setImage_path_s(file.getAbsolutePath());
+                        goods.setName(getGoodsName(file.getName()));
+                        goods.setSales_price(getGoodsPrice(file.getName()));
+                        goods.save();
+                    }
+                    ToastFactory.makeText(SalesSettingActivity.this, "U盘文件已经成功导入", Toast.LENGTH_SHORT).show();
+                    buttonSalesSettingUDiskImport.setClickable(false);
+                } else {
+                    ToastFactory.makeText(SalesSettingActivity.this, "请插入U盘!!!", Toast.LENGTH_SHORT).show();
                 }
-                ToastFactory.makeText(SalesSettingActivity.this, "U盘文件已经成功导入", Toast.LENGTH_SHORT).show();
             }
         });
 //        final Button buttonSalesSettingInit = (Button) findViewById(R.id.btn_sales_setting_init);
@@ -235,6 +240,37 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
                     salesSettingAdapter.notifyItemChanged(postion);
                 }
                 break;
+        }
+    }
+
+    private List<Goods> getGoodsList(String filePath) {
+        File[] files = FileService.getFiles(filePath);
+        list.clear();
+        for (int i = 0; i < files.length; i ++) {
+            Goods goods = new Goods();
+            goods.setImage_path_s(files[i].getAbsolutePath());
+            goods.setName(getGoodsName(files[i].getName()));
+            goods.setSales_price(getGoodsPrice(files[i].getName()));
+            goods.save();
+            list.add(goods);
+        }
+        return list;
+    }
+
+    public String getGoodsName(String fileName) {
+        return fileName.substring(0, fileName.indexOf("￥"));
+    }
+
+    public float getGoodsPrice(String fileName) {
+        return Float.parseFloat(fileName.substring(fileName.indexOf("￥") + 1,fileName.lastIndexOf('.')));
+    }
+
+    private boolean USBExists() {
+        File usbFile = new File(FROMPATH);
+        if (usbFile.exists()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
