@@ -15,6 +15,7 @@ import java.util.List;
 import cn.edu.stu.max.cocovendor.R;
 import cn.edu.stu.max.cocovendor.databaseClass.Goods;
 import cn.edu.stu.max.cocovendor.databaseClass.SingleProductSalesPandect;
+import cn.edu.stu.max.cocovendor.javaClass.FileService;
 
 public class SingleProductSalesPandectAdapter extends RecyclerView.Adapter {
     private List<SingleProductSalesPandect> list;
@@ -36,7 +37,7 @@ public class SingleProductSalesPandectAdapter extends RecyclerView.Adapter {
         sheetViewHolder vh = (sheetViewHolder) holder;
         vh.getTv_sheetRow1().setText(String.valueOf(position + 1));
         if (list.get(position).getGoodsName() == null) vh.getIv_sheetRow2().setImageResource(R.color.colorTransparency);
-        else vh.getIv_sheetRow2().setImageResource(list.get(position).getImagePath());
+        else vh.getIv_sheetRow2().setImageBitmap(FileService.getUDiskBitmap(list.get(position).getImagePath()));
         vh.getTv_sheetRow2().setText(list.get(position).getGoodsName());
         vh.getTv_sheetRow3().setText(String.valueOf(list.get(position).getGoodsSalesNum()));
         vh.getTv_sheetRow4().setText(String.valueOf(list.get(position).getGoodsCostPrice()));

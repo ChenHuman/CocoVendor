@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.edu.stu.max.cocovendor.R;
+import cn.edu.stu.max.cocovendor.javaClass.FileService;
 import cn.edu.stu.max.cocovendor.javaClass.Model;
 
 /**
@@ -76,7 +77,7 @@ public class GridViewAdapter extends BaseAdapter {
         int pos = position + curIndex * pageSize;
         viewHolder.tv_price.setText(mDatas.get(pos).getPrice());
         viewHolder.tv.setText(mDatas.get(pos).getName());
-        viewHolder.iv.setImageResource(mDatas.get(pos).getIconRes());
+        viewHolder.iv.setImageBitmap(FileService.getUDiskBitmap(mDatas.get(pos).getIconRes()));
         viewHolder.iv_mask.setVisibility(mDatas.get(pos).isSaleOut()? View.VISIBLE : View.INVISIBLE);
         return convertView;
     }

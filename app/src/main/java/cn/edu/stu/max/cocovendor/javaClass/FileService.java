@@ -1,11 +1,14 @@
 package cn.edu.stu.max.cocovendor.javaClass;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.StatFs;
 import android.text.format.Formatter;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,7 +31,6 @@ public class FileService {
         File root = new File(filePath);
         // 判断文件是否存在
         if (!root.exists()) {
-
             return null;
         }
         // 如果存在则获取当前目录下的全部文件 填充数组
@@ -124,4 +126,15 @@ public class FileService {
          String totalSize = Formatter.formatFileSize(context, totalBlocks * blockSize);   // 获得SD卡总容量
          return totalSize;
      }
+
+     // 获取文件位图
+    public static Bitmap getUDiskBitmap(String filePath) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            return BitmapFactory.decodeStream(fileInputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

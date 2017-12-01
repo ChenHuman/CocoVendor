@@ -18,6 +18,7 @@ import java.util.List;
 
 import cn.edu.stu.max.cocovendor.R;
 import cn.edu.stu.max.cocovendor.databaseClass.Goods;
+import cn.edu.stu.max.cocovendor.javaClass.FileService;
 
 public class SheetGoodsAdapter extends RecyclerView.Adapter<SheetGoodsAdapter.ViewHolder> {
     private List<Goods> list;
@@ -49,7 +50,8 @@ public class SheetGoodsAdapter extends RecyclerView.Adapter<SheetGoodsAdapter.Vi
         if (list.get(position).getName() == null) {
             holder.iv_sheetRow2.setImageResource(R.color.colorTransparency);
         } else {
-            holder.iv_sheetRow2.setImageResource(list.get(position).getImage_path());
+            // holder.iv_sheetRow2.setImageResource(list.get(position).getImage_path());
+            holder.iv_sheetRow2.setImageBitmap(FileService.getUDiskBitmap(list.get(position).getImage_path_s()));
             holder.tv_sheetRow2.setText(list.get(position).getName());
             holder.tv_sheetRow3.setText(String.valueOf(list.get(position).getSales_price()));
             holder.tv_sheetRow4.setText(String.valueOf(list.get(position).getNum()));

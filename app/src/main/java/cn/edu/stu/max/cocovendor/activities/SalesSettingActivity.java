@@ -3,6 +3,8 @@ package cn.edu.stu.max.cocovendor.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +21,14 @@ import org.litepal.crud.DataSupport;
 import org.litepal.crud.callback.FindMultiCallback;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import cn.edu.stu.max.cocovendor.javaClass.FileService;
 import cn.edu.stu.max.cocovendor.javaClass.ToastFactory;
 import cn.edu.stu.max.cocovendor.R;
 import cn.edu.stu.max.cocovendor.adapters.SalesSettingAdapter;
@@ -30,6 +37,7 @@ import cn.edu.stu.max.cocovendor.databaseClass.Goods;
 public class SalesSettingActivity extends AppCompatActivity implements SalesSettingAdapter.Callback{
 
     private final static String FROMPATH = "/mnt/usb_storage/USB_DISK2/udisk0/Goods/";   // U盘货物存储路径
+    private final static String TOPATH = "/mnt/internal_sd/CocoVendor/Goods/";
 
     private RecyclerView recyclerViewSalesSetting;
     private SalesSettingAdapter salesSettingAdapter;
@@ -67,23 +75,45 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
         //recyclerView显示适配器内容
         recyclerViewSalesSetting.setAdapter(salesSettingAdapter);
         //找到按钮UI控件并设置添加按钮监听事件
-        final Button buttonSalesSettingInit = (Button) findViewById(R.id.btn_sales_setting_init);
-        buttonSalesSettingInit.setOnClickListener(new View.OnClickListener() {
+
+        Button buttonSalesSettingUDiskImport = (Button) findViewById(R.id.btn_sales_setting_udisk_import);
+        buttonSalesSettingUDiskImport.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                for (int i = 0; i < 34; i ++) {
+            public void onClick(View view) {
+                File[] UDiskFiles = FileService.getFiles(FROMPATH);
+                for (File file : UDiskFiles) {
+                    if (file != null)
+                        FileService.copyFile(file.getPath(), TOPATH + file.getName());
+                }
+
+                File[] internalFiles = FileService.getFiles(TOPATH);
+                for (File file : internalFiles) {
                     Goods goods = new Goods();
-                    goods.setName(getResources().getStringArray(R.array.goods_name_array)[i]);
-                    goods.setCost_price((float) getResources().getIntArray(R.array.goods_price_array)[i] / 10.0f);
-                    goods.setSales_price(goods.getCost_price());
-                    goods.setImage_path(getResources().getIdentifier("ic_category_" + i, "drawable", getPackageName()));
-                    goods.setNum(5);
-                    goods.setOnSale(false);
+                    goods.setImage_path_s(file.getAbsolutePath());
+                    goods.setName(getGoodsName(file.getName()));
+                    goods.setSales_price(getGoodsPrice(file.getName()));
                     goods.save();
                 }
-                buttonSalesSettingInit.setVisibility(View.INVISIBLE);
+                ToastFactory.makeText(SalesSettingActivity.this, "U盘文件已经成功导入", Toast.LENGTH_SHORT).show();
             }
         });
+//        final Button buttonSalesSettingInit = (Button) findViewById(R.id.btn_sales_setting_init);
+//        buttonSalesSettingInit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                for (int i = 0; i < 34; i ++) {
+//                    Goods goods = new Goods();
+//                    goods.setName(getResources().getStringArray(R.array.goods_name_array)[i]);
+//                    goods.setCost_price((float) getResources().getIntArray(R.array.goods_price_array)[i] / 10.0f);
+//                    goods.setSales_price(goods.getCost_price());
+//                    // goods.setImage_path(getResources().getIdentifier("ic_category_" + i, "drawable", getPackageName()));
+//                    goods.setNum(5);
+//                    goods.setOnSale(false);
+//                    goods.save();
+//                }
+//                buttonSalesSettingInit.setVisibility(View.INVISIBLE);
+//            }
+//        });
         Button buttonSalesSettingFull = (Button) findViewById(R.id.btn_sales_setting_full);
         buttonSalesSettingFull.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,4 +246,27 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
             return false;
         }
     }
+
+    private List<Goods> getGoodsList(String filePath) {
+        File[] files = FileService.getFiles(filePath);
+        list.clear();
+        for (int i = 0; i < files.length; i ++) {
+            Goods goods = new Goods();
+            goods.setImage_path_s(files[i].getAbsolutePath());
+            goods.setName(getGoodsName(files[i].getName()));
+            goods.setSales_price(getGoodsPrice(files[i].getName()));
+            goods.save();
+            list.add(goods);
+        }
+        return list;
+    }
+
+    public String getGoodsName(String fileName) {
+        return fileName.substring(0, fileName.indexOf("¥"));
+    }
+
+    public float getGoodsPrice(String fileName) {
+        return Float.parseFloat(fileName.substring(fileName.indexOf("¥") + 1,fileName.lastIndexOf('.')));
+    }
+
 }

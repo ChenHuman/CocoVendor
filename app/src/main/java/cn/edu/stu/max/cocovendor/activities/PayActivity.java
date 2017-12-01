@@ -22,6 +22,7 @@ import org.litepal.crud.DataSupport;
 
 import cn.edu.stu.max.cocovendor.R;
 import cn.edu.stu.max.cocovendor.databaseClass.Goods;
+import cn.edu.stu.max.cocovendor.javaClass.FileService;
 import cn.edu.stu.max.cocovendor.javaClass.QRCode;
 import cn.edu.stu.max.cocovendor.javaClass.ToastFactory;
 
@@ -211,7 +212,7 @@ public class PayActivity extends AppCompatActivity {
         whichGoods =  preferences.getInt("cabinet_floor_" + whichFloor, 0);
         try {
             Goods goods = DataSupport.find(Goods.class, whichGoods);
-            ivGoodsPicture.setImageResource(goods.getImage_path());
+            ivGoodsPicture.setImageBitmap(FileService.getUDiskBitmap(goods.getImage_path_s()));
             tvGoodsName.setText(goods.getName());
             tvGoodsPrice.setText("¥ " + String.valueOf(goods.getSales_price()));
         } catch (NullPointerException e) {

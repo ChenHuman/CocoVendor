@@ -27,6 +27,7 @@ import cn.edu.stu.max.cocovendor.adapters.SalesSettingAdapter;
 import cn.edu.stu.max.cocovendor.R;
 import cn.edu.stu.max.cocovendor.adapters.SheetGoodsAdapter;
 import cn.edu.stu.max.cocovendor.databaseClass.Goods;
+import cn.edu.stu.max.cocovendor.javaClass.FileService;
 import cn.edu.stu.max.cocovendor.javaClass.ToastFactory;
 
 public class SheetGoodsActivity extends AppCompatActivity {
@@ -71,7 +72,8 @@ public class SheetGoodsActivity extends AppCompatActivity {
             Goods initGoods = DataSupport.find(Goods.class, preGoodsIndex);
             if (initGoods != null) {
                 tv_sheetRow1_sel.setText(String.valueOf(initGoods.getId()));
-                iv_sheetRow2_sel.setImageResource(initGoods.getImage_path());
+                // iv_sheetRow2_sel.setImageResource(initGoods.getImage_path());
+                iv_sheetRow2_sel.setImageBitmap(FileService.getUDiskBitmap(initGoods.getImage_path_s()));
                 tv_sheetRow2_sel.setText(initGoods.getName());
                 tv_sheetRow3_sel.setText(String.valueOf(initGoods.getSales_price()));
                 tv_sheetRow4_sel.setText(String.valueOf(initGoods.getNum()));
@@ -99,7 +101,8 @@ public class SheetGoodsActivity extends AppCompatActivity {
                 if (isSelGoods) {
                     Goods goods = sheetGoodsAdapter.getItem(position);
                     tv_sheetRow1_sel.setText(String.valueOf(goods.getId()));
-                    iv_sheetRow2_sel.setImageResource(goods.getImage_path());
+                    // iv_sheetRow2_sel.setImageResource(goods.getImage_path());
+                    iv_sheetRow2_sel.setImageBitmap(FileService.getUDiskBitmap(goods.getImage_path_s()));
                     tv_sheetRow2_sel.setText(goods.getName());
                     tv_sheetRow3_sel.setText(String.valueOf(goods.getSales_price()));
                     tv_sheetRow4_sel.setText(String.valueOf(goods.getNum()));

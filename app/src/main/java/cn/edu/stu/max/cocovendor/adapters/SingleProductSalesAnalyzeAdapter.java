@@ -20,6 +20,7 @@ import cn.edu.stu.max.cocovendor.activities.SingleProductSalesAnalyzeActivity;
 import cn.edu.stu.max.cocovendor.databaseClass.Goods;
 import cn.edu.stu.max.cocovendor.databaseClass.SingleProductSalesAnalyze;
 import cn.edu.stu.max.cocovendor.databaseClass.SingleProductSalesPandect;
+import cn.edu.stu.max.cocovendor.javaClass.FileService;
 
 public class SingleProductSalesAnalyzeAdapter extends RecyclerView.Adapter {
     private List<SingleProductSalesAnalyze> list;
@@ -42,7 +43,7 @@ public class SingleProductSalesAnalyzeAdapter extends RecyclerView.Adapter {
 
         vh.getTv_sheetRow1().setText(String.valueOf(position + 1));
         if (list.get(position).getGoodsName() == null) vh.getIv_sheetRow2().setImageResource(R.color.colorTransparency);
-        else vh.getIv_sheetRow2().setImageResource(list.get(position).getImagePath());
+        else vh.getIv_sheetRow2().setImageBitmap(FileService.getUDiskBitmap(list.get(position).getImagePath()));
         vh.getTv_sheetRow2().setText(list.get(position).getGoodsName());
 
         vh.getBtn_sheetRow2().setOnClickListener(new CustomClickListener(position));

@@ -25,7 +25,7 @@ public class SingleProductSalesPandect extends DataSupport {
     // 销售总额
     private float salesAll;
     //商品图片存放路径
-    private int imagePath;
+    private String imagePath;
 
     private int total_num = 0;
     private int total_cash = 0;
@@ -73,8 +73,8 @@ public class SingleProductSalesPandect extends DataSupport {
         this.salesAll = salesAll;
     }
 
-    public int getImagePath() {return imagePath;}
-    public void setImagePath(int imagePath) {
+    public String getImagePath() {return imagePath;}
+    public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 

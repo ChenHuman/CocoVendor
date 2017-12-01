@@ -58,6 +58,7 @@ import cn.edu.stu.max.cocovendor.adapters.ViewPagerAdapter;
 public class HomePageActivity extends SerialPortActivity {
 
     String text = "It is a test message!!";
+    String null_picture_file_path = "/mnt/internal_sd/CocoVendor/ic_category_null.png";  // 暂无商品图片路径
 
     SharedPreferences cabinetDailySalesSharedPreference;
     SharedPreferences.Editor editor;
@@ -479,37 +480,37 @@ public class HomePageActivity extends SerialPortActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_1:
-                if (resultCode == RESULT_OK) {
-                    videoFileIndex = 0;
-                    File[] currentFiles = FileService.getFiles(TOPATH);
-                    if (currentFiles.length != 0) {
-                        //Toast.makeText(HomePageActivity.this, "good", Toast.LENGTH_LONG).show();
-                        imageViewHomePageAd.setVisibility(View.INVISIBLE);
-                        videoViewHomePageAd.setVisibility(View.VISIBLE);
-                        //videoViewHomePageAd.start();
-                        if (share.getBoolean("isAdSettingChanged", false)) {
-                            videoListFrequency = new int[currentFiles.length];
-                            videoListOrder = new int[currentFiles.length];
-                            for (int i = 0; i < currentFiles.length; i++) {
-                                videoListFrequency[i] = Integer.parseInt(share.getString("Frequency_" + i, "0"));
-                                for (int j = 0; j < currentFiles.length; j++) {
-                                    if (share.getString("Ad_" + i, "null").equals(currentFiles[j].getName())) {
-                                        videoListOrder[i] = j;
-                                        break;
-                                    }
-                                }
-                            }
-                            playVideo(currentFiles[videoListOrder[videoFileIndex]].getPath());
-                        } else {
-                            playVideo(currentFiles[videoFileIndex].getPath());
-                        }
-                    } else {
-                        imageViewHomePageAd.setVisibility(View.VISIBLE);
-                        videoViewHomePageAd.setVisibility(View.INVISIBLE);
-                    }
-                }
-                break;
+//            case REQUEST_CODE_1:
+//                if (resultCode == RESULT_OK) {
+//                    videoFileIndex = 0;
+//                    File[] currentFiles = FileService.getFiles(TOPATH);
+//                    if (currentFiles.length != 0) {
+//                        //Toast.makeText(HomePageActivity.this, "good", Toast.LENGTH_LONG).show();
+//                        imageViewHomePageAd.setVisibility(View.INVISIBLE);
+//                        videoViewHomePageAd.setVisibility(View.VISIBLE);
+//                        //videoViewHomePageAd.start();
+//                        if (share.getBoolean("isAdSettingChanged", false)) {
+//                            videoListFrequency = new int[currentFiles.length];
+//                            videoListOrder = new int[currentFiles.length];
+//                            for (int i = 0; i < currentFiles.length; i++) {
+//                                videoListFrequency[i] = Integer.parseInt(share.getString("Frequency_" + i, "0"));
+//                                for (int j = 0; j < currentFiles.length; j++) {
+//                                    if (share.getString("Ad_" + i, "null").equals(currentFiles[j].getName())) {
+//                                        videoListOrder[i] = j;
+//                                        break;
+//                                    }
+//                                }
+//                            }
+//                            playVideo(currentFiles[videoListOrder[videoFileIndex]].getPath());
+//                        } else {
+//                            playVideo(currentFiles[videoFileIndex].getPath());
+//                        }
+//                    } else {
+//                        imageViewHomePageAd.setVisibility(View.VISIBLE);
+//                        videoViewHomePageAd.setVisibility(View.INVISIBLE);
+//                    }
+//                }
+//                break;
             case REQUEST_PAY_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
                     int whichFloor = data.getIntExtra("which_floor", 0);
@@ -620,9 +621,9 @@ public class HomePageActivity extends SerialPortActivity {
             Goods goods = DataSupport.find(Goods.class, whichGoods);
             if (whichGoods == 0) {
                 //Model内参数分别为价格，名字，图片，是否显示售空
-                mDatas.add(new Model("", "", R.drawable.ic_category_null, false));
+                mDatas.add(new Model("", "", null_picture_file_path, false));
             } else {
-                mDatas.add(new Model("¥ " + String.valueOf(goods.getSales_price()), goods.getName(), goods.getImage_path(), goods.getNum() == 0));//最后一个参数，库存等于0为真时显示售空
+                mDatas.add(new Model("¥ " + String.valueOf(goods.getSales_price()), goods.getName(), goods.getImage_path_s(), goods.getNum() == 0));//最后一个参数，库存等于0为真时显示售空
             }
         }
     }
@@ -740,7 +741,7 @@ public class HomePageActivity extends SerialPortActivity {
         int singleProductSalesPandectGoodsSalesCashTimes = 0;
         int singleProductSalesPandectGoodsSalesWechatTimes = 0;
         int singleProductSalesPandectGoodsSalesAlipayTimes = 0;
-        int singleProductSalesPandectGoodsImagePath = 0;
+        String singleProductSalesPandectGoodsImagePath = "";
         float singleProductSalesPandectGoodsCostPrice = 0;
         float singleProductSalesPandectGoodsSalesPrice = 0;
         float singleProductSalesPandectGoodsSalesAll = 0;
@@ -759,7 +760,7 @@ public class HomePageActivity extends SerialPortActivity {
                         .find(SingleProductSalesPandect.class).get(0).getAlipayTimes() + 1;
                     break;
             }
-            singleProductSalesPandectGoodsImagePath = DataSupport.find(Goods.class, whichGoods).getImage_path();
+            singleProductSalesPandectGoodsImagePath = DataSupport.find(Goods.class, whichGoods).getImage_path_s();
             singleProductSalesPandectGoodsSalesAll = singleProductSalesPandectGoodsSalesNum * DataSupport.find(Goods.class, whichGoods).getSales_price();
             singleProductSalesPandectGoodsCostPrice = DataSupport.find(Goods.class, whichGoods).getCost_price();
             singleProductSalesPandectGoodsSalesPrice = DataSupport.find(Goods.class, whichGoods).getSales_price();
@@ -783,7 +784,7 @@ public class HomePageActivity extends SerialPortActivity {
                 case "支付宝": singleProductSalesPandectGoodsSalesAlipayTimes = 1;
                     break;
             }
-            singleProductSalesPandectGoodsImagePath = DataSupport.find(Goods.class, whichGoods).getImage_path();
+            singleProductSalesPandectGoodsImagePath = DataSupport.find(Goods.class, whichGoods).getImage_path_s();
             singleProductSalesPandectGoodsSalesAll = DataSupport.find(Goods.class, whichGoods).getSales_price();
             singleProductSalesPandectGoodsCostPrice = DataSupport.find(Goods.class, whichGoods).getCost_price();
             singleProductSalesPandectGoodsSalesPrice = DataSupport.find(Goods.class, whichGoods).getSales_price();
@@ -804,15 +805,15 @@ public class HomePageActivity extends SerialPortActivity {
     public void setSingleProductSalesAnalyzeSheet(int whichGoods) {
         SingleProductSalesAnalyze singleProductSalesAnalyze = new SingleProductSalesAnalyze();
         String singleProductSalesPandectGoodsName = "";
-        int singleProductSalesPandectGoodsImagePath = 0;
+        String singleProductSalesPandectGoodsImagePath = "";
         if (DataSupport.where("goodsName = ?", DataSupport.find(Goods.class, whichGoods).getName()).find(SingleProductSalesAnalyze.class) != null &&
                 !DataSupport.where("goodsName = ?", DataSupport.find(Goods.class, whichGoods).getName()).find(SingleProductSalesAnalyze.class).isEmpty()) {
-            singleProductSalesPandectGoodsImagePath = DataSupport.find(Goods.class, whichGoods).getImage_path();
+            singleProductSalesPandectGoodsImagePath = DataSupport.find(Goods.class, whichGoods).getImage_path_s();
             singleProductSalesPandectGoodsName = DataSupport.find(Goods.class, whichGoods).getName();
             singleProductSalesAnalyze.setImagePath(singleProductSalesPandectGoodsImagePath);
             singleProductSalesAnalyze.updateAll("goodsName = ?", singleProductSalesPandectGoodsName);
         } else {
-            singleProductSalesPandectGoodsImagePath = DataSupport.find(Goods.class, whichGoods).getImage_path();
+            singleProductSalesPandectGoodsImagePath = DataSupport.find(Goods.class, whichGoods).getImage_path_s();
             singleProductSalesPandectGoodsName = DataSupport.find(Goods.class, whichGoods).getName();
             singleProductSalesAnalyze.setGoodsName(singleProductSalesPandectGoodsName);
             singleProductSalesAnalyze.setImagePath(singleProductSalesPandectGoodsImagePath);

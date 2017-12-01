@@ -19,7 +19,7 @@ public class SingleProductSalesAnalyze extends DataSupport {
     // 商品名称
     private String goodsName;
     // 商品图片存放路径
-    private int imagePath;
+    private String imagePath;
 
     public List<SingleProductDailySales> getSingleProductDailySales() {
         return singleProductDailySales;
@@ -34,8 +34,8 @@ public class SingleProductSalesAnalyze extends DataSupport {
         this.goodsName = goodsName;
     }
 
-    public int getImagePath() {return imagePath;}
-    public void setImagePath(int imagePath) {
+    public String getImagePath() {return imagePath;}
+    public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 }

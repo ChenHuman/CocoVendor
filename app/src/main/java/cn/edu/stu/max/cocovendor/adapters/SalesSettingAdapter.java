@@ -4,6 +4,8 @@ package cn.edu.stu.max.cocovendor.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +16,15 @@ import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import cn.edu.stu.max.cocovendor.R;
 import cn.edu.stu.max.cocovendor.activities.SheetGoodsActivity;
 import cn.edu.stu.max.cocovendor.databaseClass.Goods;
+import cn.edu.stu.max.cocovendor.javaClass.FileService;
 
 public class SalesSettingAdapter extends RecyclerView.Adapter<SalesSettingAdapter.ViewHolder> implements View.OnClickListener {
     private List<Goods> list;
@@ -55,7 +61,8 @@ public class SalesSettingAdapter extends RecyclerView.Adapter<SalesSettingAdapte
             holder.tv_sheetRow3.setText("");
             holder.tv_sheetRow4.setText("");
         } else {
-            holder.iv_sheetRow2.setImageResource(list.get(position).getImage_path());
+            //holder.iv_sheetRow2.setImageResource(list.get(position).getImage_path());
+            holder.iv_sheetRow2.setImageBitmap(FileService.getUDiskBitmap(list.get(position).getImage_path_s()));
             holder.tv_sheetRow2.setText(list.get(position).getName());
             holder.tv_sheetRow3.setText(String.valueOf(list.get(position).getSales_price()));
             holder.tv_sheetRow4.setText(String.valueOf(list.get(position).getNum()));

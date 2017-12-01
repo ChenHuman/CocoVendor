@@ -7,10 +7,10 @@ package cn.edu.stu.max.cocovendor.javaClass;
 public class Model {
     private String price;
     private String name;
-    private int iconRes;
+    private String iconRes;
     private boolean isSaleOut;
 
-    public Model(String price, String name, int iconRes, boolean isSaleOut) {
+    public Model(String price, String name, String iconRes, boolean isSaleOut) {
         this.price = price;
         this.name = name;
         this.iconRes = iconRes;
@@ -33,11 +33,11 @@ public class Model {
         this.name = name;
     }
 
-    public int getIconRes() {
+    public String getIconRes() {
         return iconRes;
     }
 
-    public void setIconRes(int iconRes) {
+    public void setIconRes(String iconRes) {
         this.iconRes = iconRes;
     }
 

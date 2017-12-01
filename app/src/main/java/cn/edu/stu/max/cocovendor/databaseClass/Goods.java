@@ -1,5 +1,7 @@
 package cn.edu.stu.max.cocovendor.databaseClass;
 
+import android.graphics.Bitmap;
+
 import org.litepal.annotation.Column;
 import org.litepal.crud.DataSupport;
 
@@ -27,6 +29,26 @@ public class Goods extends DataSupport{
     private float totalSales;
     //商品图片存放路径
     private int image_path;
+    // 商品图片存放路径
+    private String image_path_s;
+
+    public String getImage_path_s() {
+        return image_path_s;
+    }
+
+    public void setImage_path_s(String image_path_s) {
+        this.image_path_s = image_path_s;
+    }
+
+    // 商品图片
+    private Bitmap image;
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
     //商品库存数量
     private int num;
     //销售记录id
