@@ -37,7 +37,9 @@ import cn.edu.stu.max.cocovendor.databaseClass.Goods;
 public class SalesSettingActivity extends AppCompatActivity implements SalesSettingAdapter.Callback{
 
     private final static String FROMPATH = "/mnt/usb_storage/USB_DISK2/udisk0/Goods/";   // U盘货物存储路径
+    private final static String FROMPATH_1 = "/mnt/usb_storage/USB_DISK2/udisk0/CocoVendorInit/";   // U盘初始信息存储路径
     private final static String TOPATH = "/mnt/internal_sd/CocoVendor/Goods/";
+    private final static String TOPATH_1 = "/mnt/internal_sd/CocoVendorInit/";
 
     private RecyclerView recyclerViewSalesSetting;
     private SalesSettingAdapter salesSettingAdapter;
@@ -81,11 +83,13 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
             @Override
             public void onClick(View view) {
                 if (USBExists()) {
-                    File[] UDiskFiles = FileService.getFiles(FROMPATH);
-                    for (File file : UDiskFiles) {
-                        if (file != null)
-                            FileService.copyFile(file.getPath(), TOPATH + file.getName());
-                    }
+                    FileService.copyFolder(FROMPATH, TOPATH);
+                    FileService.copyFolder(FROMPATH_1, TOPATH_1);
+//                    File[] UDiskFiles = FileService.getFiles(FROMPATH);
+//                    for (File file : UDiskFiles) {
+//                        if (file != null)
+//                            FileService.copyFile(file.getPath(), TOPATH + file.getName());
+//                    }
 
                     File[] internalFiles = FileService.getFiles(TOPATH);
                     for (File file : internalFiles) {

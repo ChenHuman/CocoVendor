@@ -58,7 +58,7 @@ import cn.edu.stu.max.cocovendor.adapters.ViewPagerAdapter;
 public class HomePageActivity extends SerialPortActivity {
 
     String text = "It is a test message!!";
-    String null_picture_file_path = "/mnt/internal_sd/CocoVendor/ic_category_null.png";  // 暂无商品图片路径
+    String null_picture_file_path = "/mnt/internal_sd/CocoVendorInit/ic_category_null.png";  // 暂无商品图片路径
 
     SharedPreferences cabinetDailySalesSharedPreference;
     SharedPreferences.Editor editor;
