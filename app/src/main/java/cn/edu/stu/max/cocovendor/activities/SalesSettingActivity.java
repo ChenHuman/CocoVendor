@@ -99,28 +99,26 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
                         goods.setSales_price(getGoodsPrice(file.getName()));
                         goods.save();
                     }
-                    ToastFactory.makeText(SalesSettingActivity.this, "U盘文件已经成功导入", Toast.LENGTH_SHORT).show();
-                    buttonSalesSettingUDiskImport.setClickable(false);
+                    ToastFactory.makeText(SalesSettingActivity.this, "U盘文件已经成功导入，请点击上述按钮进行货物更换！", Toast.LENGTH_SHORT).show();
+                    // buttonSalesSettingUDiskImport.setClickable(false);
                 } else {
                     ToastFactory.makeText(SalesSettingActivity.this, "请插入U盘!!!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-//        final Button buttonSalesSettingInit = (Button) findViewById(R.id.btn_sales_setting_init);
-//        buttonSalesSettingInit.setOnClickListener(new View.OnClickListener() {
+//        final Button buttonSalesSettingLoadLocalGoods = (Button) findViewById(R.id.btn_sales_setting_init);
+//        buttonSalesSettingLoadLocalGoods.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                for (int i = 0; i < 34; i ++) {
+//                File[] internalFiles = FileService.getFiles(TOPATH);
+//                for (File file : internalFiles) {
 //                    Goods goods = new Goods();
-//                    goods.setName(getResources().getStringArray(R.array.goods_name_array)[i]);
-//                    goods.setCost_price((float) getResources().getIntArray(R.array.goods_price_array)[i] / 10.0f);
-//                    goods.setSales_price(goods.getCost_price());
-//                    // goods.setImage_path(getResources().getIdentifier("ic_category_" + i, "drawable", getPackageName()));
-//                    goods.setNum(5);
-//                    goods.setOnSale(false);
+//                    goods.setImage_path_s(file.getAbsolutePath());
+//                    goods.setName(getGoodsName(file.getName()));
+//                    goods.setSales_price(getGoodsPrice(file.getName()));
 //                    goods.save();
 //                }
-//                buttonSalesSettingInit.setVisibility(View.INVISIBLE);
+//                ToastFactory.makeText(SalesSettingActivity.this, "本地文件已经成功导入", Toast.LENGTH_SHORT).show();
 //            }
 //        });
         Button buttonSalesSettingFull = (Button) findViewById(R.id.btn_sales_setting_full);

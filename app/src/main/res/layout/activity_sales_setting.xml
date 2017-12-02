@@ -221,24 +221,31 @@
         
         <Button
             android:id="@+id/btn_sales_setting_udisk_import"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="从U盘导入"/>
-        <Button
-            android:id="@+id/btn_sales_setting_init"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/label_init_goods"/>
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_margin="12dp"
+            android:text="从U盘导入货物信息"
+            android:textSize="20sp" />
+        <!--<Button-->
+            <!--android:id="@+id/btn_sales_setting_init"-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="@string/label_load_local_goods"/>-->
         <Button
             android:id="@+id/btn_sales_setting_full"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/label_full_goods"/>
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_margin="12dp"
+            android:text="@string/label_full_goods"
+            android:textSize="20sp" />
         <Button
             android:id="@+id/btn_sales_setting_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/label_clear_goods"/>
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_margin="12dp"
+            android:text="@string/label_clear_goods"
+            android:textSize="20sp" />
         <!--<Button-->
             <!--android:id="@+id/btn_sales_setting_save"-->
             <!--android:layout_width="wrap_content"-->

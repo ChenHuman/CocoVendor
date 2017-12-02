@@ -40,7 +40,7 @@
     <string name="label_goods_price">价格</string>
     <string name="label_goods_quanlity">库存</string>
     <string name="label_goods_change">更换商品</string>
-    <string name="label_init_goods">初始化商品-测试用</string>
+    <string name="label_load_local_goods">加载本地货物表</string>
     <string name="label_full_goods">补满商品库存</string>
     <string name="label_clear_goods">下架所有商品</string>
     <string name="label_save">保存</string>
