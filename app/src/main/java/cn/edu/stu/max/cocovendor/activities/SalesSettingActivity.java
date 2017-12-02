@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.stu.max.cocovendor.adapters.MyInternalListAdapter;
 import cn.edu.stu.max.cocovendor.javaClass.FileService;
 import cn.edu.stu.max.cocovendor.javaClass.ToastFactory;
 import cn.edu.stu.max.cocovendor.R;
@@ -99,7 +100,7 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
                         goods.setSales_price(getGoodsPrice(file.getName()));
                         goods.save();
                     }
-                    ToastFactory.makeText(SalesSettingActivity.this, "U盘文件已经成功导入，请点击上述按钮进行货物更换！", Toast.LENGTH_SHORT).show();
+                    ToastFactory.makeText(SalesSettingActivity.this, "U盘文件已经成功导入，请点击上述按钮进行货物更换！", Toast.LENGTH_LONG).show();
                     // buttonSalesSettingUDiskImport.setClickable(false);
                 } else {
                     ToastFactory.makeText(SalesSettingActivity.this, "请插入U盘!!!", Toast.LENGTH_SHORT).show();
@@ -125,10 +126,11 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
         buttonSalesSettingFull.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Goods> toFullGoods = salesSettingAdapter.getList();
-                for (Goods i : toFullGoods) {
-                    i.setNum(5);
-                    i.save();
+                for (Goods i : list) {
+                    if (i.getName() != null) {
+                        i.setNum(5);
+                        i.save();
+                    }
                 }
                 salesSettingAdapter.notifyDataSetChanged();
             }
@@ -138,25 +140,44 @@ public class SalesSettingActivity extends AppCompatActivity implements SalesSett
         buttonSalesSettingClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                list.clear();
-                SharedPreferences.Editor editor = preferences.edit();
-                for (int i = 0; i < CABINET_SIZE; i ++) {
-                    int whichGoods =  preferences.getInt("cabinet_floor_" + i, 0);
-                    Goods goods = DataSupport.find(Goods.class, whichGoods);
-                    if (goods != null) {
-                        String GoodsOnSaleLocal = goods.getOnSaleLocal();
-                        GoodsOnSaleLocal = GoodsOnSaleLocal.replace("-" + i + ":", "");
-                        goods.setOnSaleLocal(GoodsOnSaleLocal);
-                        if (GoodsOnSaleLocal != null) {
-                            goods.setOnSale(false);
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SalesSettingActivity.this);
+                builder.setMessage("确认下架全部商品吗？");
+                builder.setTitle("提示");
+                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        list.clear();
+                        SharedPreferences.Editor editor = preferences.edit();
+                        for (int i = 0; i < CABINET_SIZE; i ++) {
+                            int whichGoods =  preferences.getInt("cabinet_floor_" + i, 0);
+                            Goods goods = DataSupport.find(Goods.class, whichGoods);
+                            if (goods != null) {
+                                String GoodsOnSaleLocal = goods.getOnSaleLocal();
+                                GoodsOnSaleLocal = GoodsOnSaleLocal.replace("-" + i + ":", "");
+                                goods.setOnSaleLocal(GoodsOnSaleLocal);
+                                if (GoodsOnSaleLocal != null) {
+                                    goods.setOnSale(false);
+                                }
+                                goods.save();
+                            }
+                            editor.putInt("cabinet_floor_" + i, 0);
+                            editor.apply();
+                            list.add(new Goods());
                         }
-                        goods.save();
+                        salesSettingAdapter.notifyDataSetChanged();
+
                     }
-                    editor.putInt("cabinet_floor_" + i, 0);
-                    editor.apply();
-                    list.add(new Goods());
-                }
-                salesSettingAdapter.notifyDataSetChanged();
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setCancelable(false);
+                builder.create().show();
             }
         });
         Button buttonSalesSettingReturn = (Button) findViewById(R.id.btn_sales_setting_return);

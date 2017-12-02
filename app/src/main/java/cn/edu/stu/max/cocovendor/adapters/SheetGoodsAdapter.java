@@ -47,25 +47,22 @@ public class SheetGoodsAdapter extends RecyclerView.Adapter<SheetGoodsAdapter.Vi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.tv_sheetRow1.setText(String.valueOf(list.get(position).getId()));
-        if (list.get(position).getName() == null) {
-            holder.iv_sheetRow2.setImageResource(R.color.colorTransparency);
+        // holder.iv_sheetRow2.setImageResource(list.get(position).getImage_path());
+        holder.iv_sheetRow2.setImageBitmap(FileService.getUDiskBitmap(list.get(position).getImage_path_s()));
+        holder.tv_sheetRow2.setText(list.get(position).getName());
+        holder.tv_sheetRow3.setText(String.valueOf(list.get(position).getSales_price()));
+        holder.tv_sheetRow4.setText(String.valueOf(list.get(position).getNum()));
+        holder.tv_sheetRow6.setText(list.get(position).getOnSaleLocal());
+        //判断如果商品在售状态为假，设置为未上架
+        if (!list.get(position).isOnSale()) {
+            holder.tv_sheetRow5.setText("未上架");
+            holder.tv_sheetRow5.setTextColor(Color.RED);
         } else {
-            // holder.iv_sheetRow2.setImageResource(list.get(position).getImage_path());
-            holder.iv_sheetRow2.setImageBitmap(FileService.getUDiskBitmap(list.get(position).getImage_path_s()));
-            holder.tv_sheetRow2.setText(list.get(position).getName());
-            holder.tv_sheetRow3.setText(String.valueOf(list.get(position).getSales_price()));
-            holder.tv_sheetRow4.setText(String.valueOf(list.get(position).getNum()));
-            holder.tv_sheetRow6.setText(list.get(position).getOnSaleLocal());
-            //判断如果商品在售状态为假，设置为未上架
-            if (!list.get(position).isOnSale()) {
-                holder.tv_sheetRow5.setText("未上架");
-                holder.tv_sheetRow5.setTextColor(Color.RED);
-            } else {
-                holder.tv_sheetRow5.setText("在售中");
-                holder.tv_sheetRow5.setTextColor(Color.GREEN);
-            }
-
+            holder.tv_sheetRow5.setText("在售中");
+            holder.tv_sheetRow5.setTextColor(Color.GREEN);
         }
+
+
         //判断如果监听有设置，则设置点击事件
         if (onItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

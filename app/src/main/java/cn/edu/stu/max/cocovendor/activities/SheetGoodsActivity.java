@@ -61,6 +61,10 @@ public class SheetGoodsActivity extends AppCompatActivity {
         editor = preferences.edit();
         linearLayoutGoodsSel.setVisibility(isSelGoods ? View.VISIBLE : View.GONE);
         List<Goods> allGoods = DataSupport.findAll(Goods.class);
+
+        Log.d("Taggggggg", ""+DataSupport.count(Goods.class));
+        ToastFactory.makeText(SheetGoodsActivity.this, ""+DataSupport.count(Goods.class), Toast.LENGTH_LONG).show();
+
         if (isSelGoods) {
             tv_sheetRow1_sel = (TextView) findViewById(R.id.tv_sheetRow1_sel);
             iv_sheetRow2_sel = (ImageView) findViewById(R.id.iv_sheetRow2_sel);
