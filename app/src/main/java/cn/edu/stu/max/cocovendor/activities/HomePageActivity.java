@@ -55,6 +55,8 @@ import cn.edu.stu.max.cocovendor.databaseClass.Sales;
 import cn.edu.stu.max.cocovendor.javaClass.ViewHolder;
 import cn.edu.stu.max.cocovendor.adapters.ViewPagerAdapter;
 
+// 应用程序主界面
+
 public class HomePageActivity extends SerialPortActivity {
 
     String text = "It is a test message!!";
@@ -92,6 +94,8 @@ public class HomePageActivity extends SerialPortActivity {
     private List<Model> mDatas = new ArrayList<>();
     private LinearLayout mLlDot;
     private LayoutInflater inflater;
+
+    // 主界面商品栏属性变量
     /**
      * 总的页数
      */
@@ -104,6 +108,7 @@ public class HomePageActivity extends SerialPortActivity {
      * 当前显示的是第几页
      */
     private int curIndex = 0;
+
     private ViewPagerAdapter viewPagerAdapter = null;
 
     @Override
@@ -117,27 +122,7 @@ public class HomePageActivity extends SerialPortActivity {
         mPager = (ViewPager) findViewById(R.id.viewpager);
         mLlDot = (LinearLayout) findViewById(R.id.ll_dot);
 
-//        mPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                switch (motionEvent.getAction()) {
-//                    case MotionEvent.ACTION_DOWN: { // 手指下来的时候,取消之前绑定的Runnable
-//
-//                        handler.removeCallbacks(runnable);
-//
-//                        break;
-//                    }
-//                    case MotionEvent.ACTION_UP: { // 手指离开屏幕，发送延迟消息 ，5秒后执行
-//
-//                        handler.postDelayed(runnable, 1000 * SECONDS_OF_AD);
-//
-//                        break;
-//                    }
-//                }
-//                return false;
-//            }
-//        });
-
+        // 实现整个商品栏滚动界面
         //初始化数据源,函数后面得知是24
         initDatas();
         inflater = LayoutInflater.from(this);
@@ -171,6 +156,7 @@ public class HomePageActivity extends SerialPortActivity {
             ToastFactory.makeText(HomePageActivity.this, "当前没有商品", Toast.LENGTH_SHORT).show();
         }
 
+        // 设置商品栏两个左右按钮实现左右滚动
         Button buttonPageLeft = (Button) findViewById(R.id.btn_page_left);
         Button buttonPageRight = (Button) findViewById(R.id.btn_page_right);
         buttonPageLeft.setOnClickListener(new View.OnClickListener() {
@@ -210,11 +196,13 @@ public class HomePageActivity extends SerialPortActivity {
         cabinetDailySalesSharedPreference = getSharedPreferences("cabinet_daily_sales_file", MODE_PRIVATE);
         editor = cabinetDailySalesSharedPreference.edit();   // 使处于可编辑状态
 
-        final String packageName = getPackageName();
-        SharedPreferences settings = getSharedPreferences(packageName + "_preferences", MODE_PRIVATE);
-        boolean sw = settings.getBoolean("SwitchPreference", false);
-        ViewHolder.sw = sw;
+// 调试摄像头是否开启所用
+//        final String packageName = getPackageName();
+//        SharedPreferences settings = getSharedPreferences(packageName + "_preferences", MODE_PRIVATE);
+//        boolean sw = settings.getBoolean("SwitchPreference", false);
+//        ViewHolder.sw = sw;
 
+        // 本机信息状态栏
         TextView textViewMachineId = (TextView) findViewById(R.id.tv_machine_id);
         TextView textViewMachineVersion = (TextView) findViewById(R.id.tv_machine_version);
         TextView textViewIp = (TextView) findViewById(R.id.tv_ip);
@@ -236,6 +224,7 @@ public class HomePageActivity extends SerialPortActivity {
 
         textViewCoinMoney = (TextView) findViewById(R.id.coin_money);
 
+        // 测试所用
         textViewCoinMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -268,7 +257,7 @@ public class HomePageActivity extends SerialPortActivity {
 
         initVideoPath();
 
-
+        // 广告视频自动播放
         videoViewHomePageAd.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -319,6 +308,7 @@ public class HomePageActivity extends SerialPortActivity {
             }
         });
 
+        // 开启线程
         SendThread sendThread = new SendThread();
         sendThread.start();
     }
@@ -329,6 +319,7 @@ public class HomePageActivity extends SerialPortActivity {
             super.run();
             while (!isInterrupted()) {
 
+                // 以下代码测试所用
                 SharedPreferences preferences = getSharedPreferences("serial_mode_file", MODE_PRIVATE);
                 String serialMode =  preferences.getString("serial_mode", "A");
 
@@ -369,6 +360,7 @@ public class HomePageActivity extends SerialPortActivity {
 //
 //                        }
 //                    });
+                // 串口发送函数，因上述代码待测试而暂时注释，实际有用
 //                    mOutputStream.write(text.getBytes());
 //                    mOutputStream.write('\n');
 
@@ -595,6 +587,7 @@ public class HomePageActivity extends SerialPortActivity {
 //        handler.removeCallbacks(runnable);
     }
 
+    // 全屏广告播放线程，已弃用
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -606,6 +599,7 @@ public class HomePageActivity extends SerialPortActivity {
         }
     };
 
+    // 若屏幕被触摸则取消全屏广告播放线程runnable，若60秒无操作后自动进入全屏广告播放线程runnable
     public boolean onTouchEvent(android.view.MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: { // 手指下来的时候,取消之前绑定的Runnable

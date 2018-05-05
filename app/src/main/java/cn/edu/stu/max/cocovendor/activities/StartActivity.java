@@ -35,6 +35,7 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         getSupportActionBar().hide();
 
+        // 设置监控摄像默认值
         String packageName = getPackageName();
         SharedPreferences settings = getSharedPreferences(packageName + "_preferences", MODE_PRIVATE);
         boolean sw = settings.getBoolean("SwitchPreference", false);
@@ -44,9 +45,10 @@ public class StartActivity extends AppCompatActivity {
         ViewHolder.sw = sw;
         ViewHolder.spyTime = spyTime;
 
+        // 启动摄像服务
         startService(new Intent(StartActivity.this, VideoService.class));
 
-        //判断程序是否首次启动，配置默认设置
+        // 判断程序是否首次启动，配置默认设置
         SharedPreferences preferences = getSharedPreferences("default_setting", MODE_PRIVATE);
         if (preferences.getBoolean("firstRun", true)) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -57,8 +59,11 @@ public class StartActivity extends AppCompatActivity {
             LocalInfo localInfo = new LocalInfo();
             fillLocalInfo(localInfo);
         }
+
+        // 用于调试信息查看，查看SHA值
         Log.d("SHA1:", sHA1(this));
 
+        // 等待2s后自动进入到HomePageActivity界面
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -70,6 +75,11 @@ public class StartActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    // 查看本应用程序的值（该值是用于第一次获取有关申请高德地图相关服务的key值，具体信息可参考lbs.amap.com/api/
+    // 目前该已应用已获取到该key值，位于AndroidManifest.xml 里，如下：
+    // <meta-data
+    // android:name="com.amap.api.v2.apikey"
+    // android:value="d47a4f292183bbe8a69fff44e38dbfee" />
     public static String sHA1(Context context) {
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(
@@ -96,6 +106,7 @@ public class StartActivity extends AppCompatActivity {
         return null;
     }
 
+    // 设置本机本地信息
     private void fillLocalInfo(LocalInfo localInfo) {
         localInfo.setMachine_id(1);
         localInfo.setIp("10.28.34.5");
